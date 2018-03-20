@@ -40,25 +40,43 @@ class UserBehavior(TaskSet):
         exportId = str(random.randrange(516, 815))
         path = '/api/latest/accounts/export/'+exportId+'/distributionIndex'
         self.timestamp = time.time()*1000
+        self.parameters = ''
         harkHeaders = self.buildHarkHeaders(
             'GET', path, self.sessionId, self.jsonPayload, self.timestamp, self.parameters, self.sessionKey)
         # print(harkHeaders)
         response = self.client.get(
             path, headers=harkHeaders)
-        print(response)
+        print('distributionIndexByExportId: '+str(response))
         # print(response.json())
 
     @task(2)
     def distributionIndexByDistributionGroupId(self):
         exportId = str(random.randrange(3953, 13952))
         path = '/api/latest/accounts/distributionGroup/'+exportId+'/distributionIndex'
+        self.parameters = ''
         self.timestamp = time.time()*1000
         harkHeaders = self.buildHarkHeaders(
             'GET', path, self.sessionId, self.jsonPayload, self.timestamp, self.parameters, self.sessionKey)
         # print(harkHeaders)
         response = self.client.get(
             path, headers=harkHeaders)
-        print(response)
+        print('distributionIndexByDistributionGroupId: '+str(response))
+        # print(response.json())
+
+    @task(2)
+    def distributionIndexByUserId(self):
+        userId = str(random.randrange(3223, 3226))
+        # userId = 3116
+        path = '/app/v1/user/'+str(userId)+'/exportDistributions'
+        self.parameters = {'exportTypeCode': 'ALL'}
+        pathParameters = 'exportTypeCode=ALL'
+        self.timestamp = time.time()*1000
+        harkHeaders = self.buildHarkHeaders(
+            'GET', path, self.sessionId, self.jsonPayload, self.timestamp, pathParameters, self.sessionKey)
+        # print(harkHeaders)
+        response = self.client.get(
+            path, headers=harkHeaders, params=self.parameters)
+        print('distributionIndexByUserId: '+str(response))
         # print(response.json())
 
     # @task(1)
