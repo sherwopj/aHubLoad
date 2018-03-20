@@ -25,39 +25,41 @@ class UserBehavior(TaskSet):
         self.sessionId = json_response_dict['sessionId']
         self.sessionKey = json_response_dict['sessionKey']
 
-    @task(1)
-    def userId(self):
-        harkHeaders = self.buildHarkHeaders(
-            'GET', '/api/latest/accounts/userId', self.sessionId, self.jsonPayload, self.timestamp, self.parameters, self.sessionKey)
-        # print(harkHeaders)
-        response = self.client.get(
-            "/api/latest/accounts/userId", headers=harkHeaders)
-        # print(response)
-        print(response.json())
+    # @task(1)
+    # def userId(self):
+    #     harkHeaders = self.buildHarkHeaders(
+    #         'GET', '/api/latest/accounts/userId', self.sessionId, self.jsonPayload, self.timestamp, self.parameters, self.sessionKey)
+    #     # print(harkHeaders)
+    #     response = self.client.get(
+    #         "/api/latest/accounts/userId", headers=harkHeaders)
+    #     # print(response)
+    #     print(response.json())
 
     @task(2)
     def distributionIndexByExportId(self):
         exportId = str(random.randrange(516, 815))
         path = '/api/latest/accounts/export/'+exportId+'/distributionIndex'
+        self.timestamp = time.time()*1000
         harkHeaders = self.buildHarkHeaders(
             'GET', path, self.sessionId, self.jsonPayload, self.timestamp, self.parameters, self.sessionKey)
         # print(harkHeaders)
         response = self.client.get(
             path, headers=harkHeaders)
-        # print(response)
-        print(response.json())
+        print(response)
+        # print(response.json())
 
     @task(2)
     def distributionIndexByDistributionGroupId(self):
         exportId = str(random.randrange(3953, 13952))
         path = '/api/latest/accounts/distributionGroup/'+exportId+'/distributionIndex'
+        self.timestamp = time.time()*1000
         harkHeaders = self.buildHarkHeaders(
             'GET', path, self.sessionId, self.jsonPayload, self.timestamp, self.parameters, self.sessionKey)
         # print(harkHeaders)
         response = self.client.get(
             path, headers=harkHeaders)
-        # print(response)
-        print(response.json())
+        print(response)
+        # print(response.json())
 
     # @task(1)
     # def profile(self):
@@ -104,5 +106,5 @@ class UserBehavior(TaskSet):
 
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior
-    min_wait = 5000
-    max_wait = 9000
+    min_wait = 18000
+    max_wait = 22000
